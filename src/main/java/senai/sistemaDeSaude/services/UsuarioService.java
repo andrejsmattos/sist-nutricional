@@ -8,7 +8,6 @@ import senai.sistemaDeSaude.entities.Perfil;
 import senai.sistemaDeSaude.entities.Usuario;
 import senai.sistemaDeSaude.repositories.UsuarioRepository;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service

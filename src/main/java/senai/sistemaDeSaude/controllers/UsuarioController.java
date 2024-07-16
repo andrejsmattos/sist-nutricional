@@ -17,9 +17,6 @@ public class UsuarioController {
 
     @PostMapping("/cadastro")
     public ResponseEntity<String> cadastraUsuario(@RequestBody LoginRequest loginRequest) {
-/*        if (loginRequest.nomePerfil() == null || loginRequest.nomePerfil().isBlank()) {
-            return new ResponseEntity<>("O nome do perfil não pode ser nulo ou vazio", HttpStatus.BAD_REQUEST);
-        }*/
 
         usuarioService.cadastraUsuario(loginRequest);
         return new ResponseEntity<>("Usuário criado", HttpStatus.CREATED);
