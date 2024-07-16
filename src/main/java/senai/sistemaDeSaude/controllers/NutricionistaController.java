@@ -1,20 +1,30 @@
 package senai.sistemaDeSaude.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import senai.sistemaDeSaude.DTOs.NutricionistaRequestDTO;
 import senai.sistemaDeSaude.DTOs.NutricionistaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import senai.sistemaDeSaude.services.NutricionistaService;
+import senai.sistemaDeSaude.services.TokenService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/nutricionistas")
 public class NutricionistaController {
+
     @Autowired
     private NutricionistaService nutricionistaService;
 
+    private final TokenService tokenService;
+
+    public NutricionistaController(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_NUTRI')")
     @PostMapping("/criar")
     public ResponseEntity<NutricionistaResponseDTO> criarNutricionista(@RequestBody NutricionistaRequestDTO nutricionistaRequestDTO) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.criarNutricionista(nutricionistaRequestDTO);
@@ -34,7 +44,12 @@ public class NutricionistaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NutricionistaResponseDTO>> listarNutricionistas() {
+    public ResponseEntity<List<NutricionistaResponseDTO>> listarNutricionistas(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        tokenService.validaToken(token, "NUTRI");
+
+
         List<NutricionistaResponseDTO> nutricionistas = nutricionistaService.listarNutricionistas();
         return ResponseEntity.ok(nutricionistas);
     }
