@@ -30,6 +30,7 @@ public class TokenController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> geraToken (@RequestBody LoginRequest loginRequest) {
 
+
         Usuario usuario = usuarioService.validaUsuario(loginRequest);
 
         Instant agora = Instant.now();

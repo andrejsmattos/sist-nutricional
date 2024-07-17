@@ -24,26 +24,29 @@ public class NutricionistaController {
         this.tokenService = tokenService;
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_NUTRI')")
     @PostMapping("/criar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<NutricionistaResponseDTO> criarNutricionista(@RequestBody NutricionistaRequestDTO nutricionistaRequestDTO) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.criarNutricionista(nutricionistaRequestDTO);
         return ResponseEntity.ok(nutricionista);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NUTRICIONISTA')")
     public ResponseEntity<NutricionistaResponseDTO> atualizarNutricionista(@PathVariable Long id, @RequestBody NutricionistaRequestDTO nutricionistaRequestDTO) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.atualizarNutricionista(id, nutricionistaRequestDTO);
         return ResponseEntity.ok(nutricionista);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deletarNutricionista(@PathVariable Long id) {
         nutricionistaService.deletarNutricionista(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NUTRICIONISTA')")
     public ResponseEntity<List<NutricionistaResponseDTO>> listarNutricionistas(
             @RequestHeader(name = "Authorization") String token
     ) {
@@ -55,18 +58,21 @@ public class NutricionistaController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NUTRICIONISTA')")
     public ResponseEntity<NutricionistaResponseDTO> buscarNutricionista(@PathVariable Long id) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.buscarNutricionista(id);
         return ResponseEntity.ok(nutricionista);
     }
 
     @PutMapping("/{id}/adicionarAno")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NUTRICIONISTA')")
     public ResponseEntity<NutricionistaResponseDTO> adicionarAnoDeExperiencia(@PathVariable Long id) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.adicionarAnoDeExperiencia(id);
         return ResponseEntity.ok(nutricionista);
     }
 
     @PutMapping("/{id}/adicionarCertificacao")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NUTRICIONISTA')")
     public ResponseEntity<NutricionistaResponseDTO> adicionarCertificacao(@PathVariable Long id, @RequestBody String certificacao) {
         NutricionistaResponseDTO nutricionista = nutricionistaService.adicionarCertificacao(id, certificacao);
         return ResponseEntity.ok(nutricionista);
